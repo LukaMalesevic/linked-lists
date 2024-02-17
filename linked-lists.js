@@ -18,7 +18,7 @@ class LinkedList
 
     toString(start = this._head, string = '')
     {
-        if(start === null) return 'List has no nodes';
+        if(start === null) return console.log('List has no nodes');
         else if(start.nextNode === null)
         {
             string += `( ${start.value} ) -> ` + this._tail.nextNode;
@@ -71,7 +71,7 @@ class LinkedList
 
     at(index, start = this._head)
     {
-        if(index >= this.size()) return `List doesn't have node on index: ${index}`;
+        if(index >= this.size()) return console.log(`List doesn't have node on index: ${index}`);
         else
         {
             if(index === 0) return start.value;
@@ -81,12 +81,12 @@ class LinkedList
 
     pop(start = this._head)
     {
-        if(start === null) return `List doesn't have any nodes to remove.`;
+        if(start === null) return console.log(`List doesn't have any nodes to remove.`);
         else if(start.nextNode.nextNode === null)
         {
             start.nextNode = null;
             this._tail = start;
-            return 'Last node has been successfully removed.'
+            return console.log('Last node has been successfully removed.');
         }
         else return this.pop(start.nextNode);   
     }
@@ -105,6 +105,27 @@ class LinkedList
         else return this.find(value, start.nextNode, ++index); 
     }
 
+    insertAt(value, index, start = this._head)
+    {
+        if(index > this.size()) return console.log('Index is bigger than size of the list');
+        else if(index === 0 && start === this._head) this.prepend(value);
+        else if(index === (this.size())) this.append(value);
+        else if(index === 1)
+        {
+            const n1 = new Node(value, start.nextNode);
+            return start.nextNode = n1;
+        }
+        else return this.insertAt(value, --index, start.nextNode);
+    }
+
+    removeAt(index, start = this._head)
+    {
+        if(index >= this.size()) return console.log('Index is bigger than size of the list');
+        else if(index === 0 && start === this._head) return this._head = start.nextNode;
+        else if(index === (this.size()-1)) this.pop();
+        else if(index === 1) return start.nextNode = start.nextNode.nextNode; 
+        else return this.removeAt(--index, start.nextNode);
+    }
 }
 
 class Node
@@ -124,4 +145,8 @@ list.prepend(2);
 list.append(5);
 list.prepend(1);
 list.pop();
+list.insertAt(5,4);
+list.append(6);
+list.prepend(0);
+list.removeAt(5);
 console.log(list.toString());
